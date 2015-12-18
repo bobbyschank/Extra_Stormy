@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_current"
+            android:icon="@drawable/abc_btn_check_to_on_mtrl_000"
+            android:title="View Current Conditions"/>
+        <item
+            android:id="@+id/nav_hourly"
+            android:icon="@drawable/abc_btn_check_to_on_mtrl_000"
+            android:title="View Hourly Forecast"/>
+        <item
+            android:id="@+id/nav_daily"
+            android:icon="@drawable/abc_btn_check_to_on_mtrl_000"
+            android:title="View Daily Forecast"/>
+        <item
+            android:id="@+id/nav_maps"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Select Location on Map"/>
+    </group>
+
+</menu>

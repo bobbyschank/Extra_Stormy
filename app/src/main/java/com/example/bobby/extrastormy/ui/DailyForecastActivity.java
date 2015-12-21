@@ -1,12 +1,14 @@
 package com.example.bobby.extrastormy.ui;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 
@@ -18,14 +20,14 @@ import android.widget.TextView;
 import com.example.bobby.extrastormy.R;
 import com.example.bobby.extrastormy.adapters.DayAdapter;
 import com.example.bobby.extrastormy.weather.Day;
-import com.example.bobby.extrastormy.weather.Forecast;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class DailyForecastActivity extends ListActivity
+public class DailyForecastActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
@@ -36,6 +38,9 @@ public class DailyForecastActivity extends ListActivity
     Parcelable[] hourParcelables;
     Parcelable[] dayParcelables;
 
+    @InjectView(R.id.dailyRecycler)
+    RecyclerView mRecyclerView;
+
     @InjectView(R.id.locationLabel)
     TextView mLocationLabel;
 
@@ -44,7 +49,7 @@ public class DailyForecastActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daily);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
         ButterKnife.inject(this);
 
@@ -55,12 +60,17 @@ public class DailyForecastActivity extends ListActivity
         dayParcelables = intent.getParcelableArrayExtra(getString(R.string.daysKey));
         hourParcelables = intent.getParcelableArrayExtra(getString(R.string.hoursKey));
 
-        mDays = Arrays.copyOf(dayParcelables, dayParcelables.length, Day[].class);
+        mDays = Arrays.copyOf(dayParcelables, dayParcelables.length-1, Day[].class);
+
+        DayAdapter adapter = new DayAdapter(mDays);
+        mRecyclerView.setAdapter(adapter);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        mRecyclerView.setHasFixedSize(true);
 
         mLocationLabel.setText(parseLocation);
-
-        DayAdapter adapter = new DayAdapter(this, mDays);
-        setListAdapter(adapter);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

@@ -1,13 +1,11 @@
 package com.example.bobby.extrastormy.ui;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,7 +36,7 @@ public class HourlyForecastActivity extends AppCompatActivity
     Parcelable[] hourParcelables;
     Parcelable[] dayParcelables;
 
-    @InjectView(R.id.recyclerView)
+    @InjectView(R.id.hourlyRecycler)
     RecyclerView mRecyclerView;
 
     @InjectView(R.id.locationLabel)

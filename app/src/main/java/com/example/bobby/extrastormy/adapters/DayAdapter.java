@@ -1,10 +1,9 @@
 package com.example.bobby.extrastormy.adapters;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,68 +13,62 @@ import com.example.bobby.extrastormy.weather.Day;
 /**
  * Created by bobby on 12/14/15.
  */
-public class DayAdapter extends BaseAdapter {
+public class DayAdapter extends RecyclerView.Adapter<DayAdapter.DayViewHolder> {
 
-    private Context mContext;
     private Day[] mDays;
 
-    public DayAdapter(Context context, Day[] days) {
-        mContext = context;
+    public DayAdapter(Day[] days) {
         mDays = days;
     }
 
     @Override
-    public int getCount() {
+    public DayViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.daily_list_item, parent, false);
+        DayViewHolder viewHolder = new DayViewHolder(view);
+        return viewHolder;
+
+    }
+
+    @Override
+    public void onBindViewHolder(DayViewHolder holder, int position) {
+
+        holder.bindDay(mDays[position]);
+
+    }
+
+    @Override
+    public int getItemCount() {
         return mDays.length;
     }
 
-    @Override
-    public Object getItem(int position) {
-        return mDays[position];
-    }
+    public class DayViewHolder extends RecyclerView.ViewHolder {
 
-    @Override
-    public long getItemId(int position) {
-        return 0; // Will not be used, used to tag items
-    }
+        public TextView mTemperatureMax;
+        public TextView mDayNameLabel;
+        public ImageView mIconImageView;
+        public ImageView mCircleImageView;
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        public DayViewHolder (View itemView) {
 
-        if (convertView == null) {
-            // brand new
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.daily_list_item, null);
-            holder = new ViewHolder();
-            holder.iconImageView = (ImageView) convertView.findViewById(R.id.iconImageView);
-            holder.temperatureLabel = (TextView) convertView.findViewById(R.id.temperatureLabel);
-            holder.dayLabel = (TextView) convertView.findViewById(R.id.dayNameLabel);
+            super(itemView);
 
-            convertView.setTag(holder);
-
-        }
-        else {
-            holder = (ViewHolder) convertView.getTag();
+            mTemperatureMax =  (TextView) itemView.findViewById(R.id.temperatureLabel);
+            mDayNameLabel = (TextView) itemView.findViewById(R.id.dayNameLabel);
+            mIconImageView = (ImageView) itemView.findViewById(R.id.iconImageView);
+            mCircleImageView = (ImageView) itemView.findViewById(R.id.circleImageView);
         }
 
+        public void bindDay (Day day) {
 
-        Day day = mDays[position];
+            mTemperatureMax.setText(day.getTemperatureMax() + "");
+            mDayNameLabel.setText(day.getDayOfTheWeek());
+            mIconImageView.setImageResource(day.getIconId());
+            mCircleImageView.setImageResource(R.mipmap.bg_temperature);
 
-        holder.iconImageView.setImageResource(day.getIconId());
-        holder.temperatureLabel.setText(day.getTemperatureMax() + "");
-
-        if (position == 0) {
-            holder.dayLabel.setText("Today");
-        } else {
-
-            holder.dayLabel.setText(day.getDayOfTheWeek());
         }
-        return convertView;
+
     }
 
-    private static class ViewHolder {
-        ImageView iconImageView;
-        TextView temperatureLabel;
-        TextView dayLabel;
-    }
 }
